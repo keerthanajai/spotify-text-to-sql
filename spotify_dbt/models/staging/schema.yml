@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: stg_tracks
+    description: "Cleaned tracks with duration in minutes"
+    columns:
+      - name: TRACK_URI
+        description: "Unique track identifier"
+        tests:
+          - unique
+          - not_null
+      - name: TRACK_NAME
+        tests:
+          - not_null
+      - name: DURATION_MIN
+        tests:
+          - not_null
+
+  - name: stg_artists
+    description: "Cleaned artists"
+    columns:
+      - name: ARTIST_URI
+        description: "Unique artist identifier"
+        tests:
+          - unique
+          - not_null
+      - name: ARTIST_NAME
+        tests:
+          - not_null
+
+  - name: stg_playlists
+    description: "Cleaned playlists with timestamp"
+    columns:
+      - name: PID
+        description: "Unique playlist identifier"
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_playlist_tracks
+    description: "Playlist to track relationships"
+    columns:
+      - name: PID
+        tests:
+          - not_null
+      - name: TRACK_URI
+        tests:
+          - not_null

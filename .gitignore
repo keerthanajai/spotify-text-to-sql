@@ -1,0 +1,24 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# JSON data files (too large for GitHub)
+data/mpd.slice.*.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+Untitled.ipynb
+
+# macOS
+.DS_Store
+
+# dbt
+logs/
+target/
+dbt_packages/
