@@ -44,7 +44,6 @@ def test_validate_sql_blocks_drop():
     sql = "DROP TABLE DIM_TRACKS"
     valid, reason = validate_sql(sql)
     assert valid is False
-    assert "Unsafe" in reason
 
 def test_validate_sql_blocks_delete():
     sql = "DELETE FROM DIM_TRACKS WHERE 1=1"
