@@ -73,13 +73,16 @@ def clean_sql(raw: str) -> str:
     return raw.strip()
 
 def validate_sql(sql: str) -> tuple[bool, str]:
+    # Block dangerous operations first before anything else
+    for pattern in UNSAFE_PATTERNS:
+        if re.search(pattern, sql, re.IGNORECASE):
+            return False, "Unsafe SQL operation detected"
+
+    # Must start with SELECT or WITH
     if not re.match(r'^\s*(SELECT|WITH)', sql, re.IGNORECASE):
         return False, "Query must be a SELECT statement"
 
-    for pattern in UNSAFE_PATTERNS:
-        if re.search(pattern, sql, re.IGNORECASE):
-            return False, f"Unsafe SQL operation detected"
-
+    # Must reference at least one known table
     known_tables = ["DIM_ARTISTS", "DIM_TRACKS", "DIM_PLAYLISTS", "FACT_PLAYLIST_TRACKS",
                     "STG_ARTISTS", "STG_TRACKS", "STG_PLAYLISTS", "STG_PLAYLIST_TRACKS",
                     "MART_TOP_ARTISTS", "MART_TOP_TRACKS", "MART_PLAYLIST_STATS"]
