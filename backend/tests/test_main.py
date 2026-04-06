@@ -9,8 +9,6 @@ from main import app, clean_sql, validate_sql
 
 client = TestClient(app)
 
-# ── clean_sql tests ────────────────────────────────────────────────
-
 def test_clean_sql_removes_markdown_backticks():
     raw = "```sql\nSELECT * FROM DIM_TRACKS\n```"
     result = clean_sql(raw)
@@ -31,8 +29,6 @@ def test_clean_sql_handles_with_clause():
     raw = "WITH cte AS (SELECT 1) SELECT * FROM cte"
     result = clean_sql(raw)
     assert result.startswith("WITH")
-
-# ── validate_sql tests ─────────────────────────────────────────────
 
 def test_validate_sql_accepts_valid_select():
     sql = "SELECT * FROM SPOTIFY_DW.PUBLIC.DIM_TRACKS LIMIT 10"
@@ -66,8 +62,6 @@ def test_validate_sql_accepts_mart_tables():
     valid, reason = validate_sql(sql)
     assert valid is True
 
-# ── API endpoint tests ─────────────────────────────────────────────
-
 def test_health_endpoint():
     response = client.get("/health")
     assert response.status_code == 200
@@ -78,7 +72,6 @@ def test_ask_endpoint_missing_question():
     assert response.status_code == 422
 
 def test_ask_endpoint_with_mock():
-    # Mock both Claude and Snowflake so we don't need real credentials
     mock_sql = "SELECT ARTIST_NAME FROM SPOTIFY_DW.PUBLIC.DIM_ARTISTS LIMIT 5"
     mock_columns = ["ARTIST_NAME"]
     mock_rows = [["Drake"], ["Rihanna"], ["Kanye West"]]
